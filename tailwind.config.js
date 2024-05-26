@@ -5,7 +5,9 @@ export default {
     extend: {
       colors: {
         dark: "#171823",
-        form: '#25273D'
+        form: '#25273D',
+        primary: "#5B5E7E",
+        active: "#3A7CFD"
       }
     }
   },
