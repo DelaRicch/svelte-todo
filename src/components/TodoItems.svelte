@@ -58,7 +58,7 @@ const handleSelectCurrentTodoItems = (filter: string) => {
 {/each}
 
 <div class="flex items-center justify-between p-3">
-    <span class="text-primary">{$activeTodoItems.length} item{$currentTodoItems.length === 1 ? '' : 's'} left</span>
+    <span class="text-primary">{$activeTodoItems.length} item{$activeTodoItems.length === 1 ? '' : 's'} left</span>
     <div class="flex gap-4">
         {#each filterButtons as item}
         <button on:click={() => handleSelectCurrentTodoItems(item.filter)} class="{cn('text-primary font-medium active:bg-dark p-2', {
@@ -68,6 +68,6 @@ const handleSelectCurrentTodoItems = (filter: string) => {
         {/each}
 
     </div>
-    <button on:click={handleClearCompleted} class="text-primary font-medium active:bg-dark p-2">Clear Completed</button>
+    <button disabled={!$completedTodoItems.length} on:click={handleClearCompleted} class="text-primary font-medium active:bg-dark p-2 disabled:pointer-events-none">Clear Completed</button>
 </div>
 </section>
