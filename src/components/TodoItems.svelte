@@ -2,8 +2,25 @@
 	import { activeTodoItems, allTodoItems, completedTodoItems, handleClearCompleted, handleCompleteTodo, todoItems } from "../store";
 
 let currentTodoItems = allTodoItems;
+let currentFilter = "all";
+
+const filterButtons = [
+    {
+        label: "All",
+        filter: "all"
+    },
+    {
+        label: "Active",
+        filter: "active"
+    },
+    {
+        label: "Completed",
+        filter: "completed"
+    }
+]
 
 const handleSelectCurrentTodoItems = (filter: string) => {
+    currentFilter = filter;
     switch (filter) {
         case "all":
             currentTodoItems = todoItems;
@@ -37,9 +54,10 @@ const handleSelectCurrentTodoItems = (filter: string) => {
 <div class="flex items-center justify-between p-3">
     <span class="text-primary">{$activeTodoItems.length} items left</span>
     <div class="flex gap-4">
-        <button on:click={() => handleSelectCurrentTodoItems("all")} class="text-primary">All</button>
-        <button on:click={() => handleSelectCurrentTodoItems("active")} class="text-primary">Active</button>
-        <button on:click={() => handleSelectCurrentTodoItems("completed")} class="text-primary">Completed</button>
+        {#each filterButtons as item}
+        <button on:click={() => handleSelectCurrentTodoItems(item.filter)} class="text-primary">{item.label}</button>
+        {/each}
+
     </div>
     <button on:click={handleClearCompleted} class="text-primary">Clear Completed</button>
 </div>
