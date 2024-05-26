@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { activeTodoItems, allTodoItems, completedTodoItems, handleClearCompleted, handleCompleteTodo, todoItems } from "../store";
-
+	import { cn } from "../utils";
 let currentTodoItems = allTodoItems;
 let currentFilter = "all";
 
@@ -42,23 +42,32 @@ const handleSelectCurrentTodoItems = (filter: string) => {
     {#each $currentTodoItems as todo (todo.id)}
 <div class="flex items-center gap-6 p-3">
     <button on:click={() => handleCompleteTodo(todo.id)} class="rounded-full w-6 h-6 border border-slate-500 flex items-center justify-center">
+        {#if todo.completed}
         <span class="transform scale-75">
             ✔
         </span>
+        {/if}
     </button>
-    <input type="text" bind:value={todo.title} class="h-full text-white outline-none w-full bg-transparent" />
-    <!-- <span class="text-white">{todo.title}</span> -->
+    <input type="text" bind:value={todo.title} class="{cn('h-full text-white outline-none w-full bg-transparent', {
+        'line-through text-primary italic pointer-events-none': todo.completed
+    
+    })}" />
 </div>
+{:else}
+<span class="text-center py-10 font-semibold italic text-primary">No {currentFilter === "all" ? '' : currentFilter} items</span>
 {/each}
 
 <div class="flex items-center justify-between p-3">
-    <span class="text-primary">{$activeTodoItems.length} items left</span>
+    <span class="text-primary">{$activeTodoItems.length} item{$currentTodoItems.length === 1 ? '' : 's'} left</span>
     <div class="flex gap-4">
         {#each filterButtons as item}
-        <button on:click={() => handleSelectCurrentTodoItems(item.filter)} class="text-primary">{item.label}</button>
+        <button on:click={() => handleSelectCurrentTodoItems(item.filter)} class="{cn('text-primary font-medium active:bg-dark p-2', {
+            'text-active': item.filter === currentFilter
+        
+        })}">{item.label}</button>
         {/each}
 
     </div>
-    <button on:click={handleClearCompleted} class="text-primary">Clear Completed</button>
+    <button on:click={handleClearCompleted} class="text-primary font-medium active:bg-dark p-2">Clear Completed</button>
 </div>
 </section>
